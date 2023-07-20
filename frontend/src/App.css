@@ -107,6 +107,13 @@ a {
   transition: border-color 0.2s;
 }
 
+.textInput:hover {
+  border-bottom: 2px solid var(--main-color);
+}
+.textInput:focus {
+  border-bottom: 2px solid var(--secondary-color);
+}
+
 /* Global buttons */
 .button {
   background-color: var(--main-color);
