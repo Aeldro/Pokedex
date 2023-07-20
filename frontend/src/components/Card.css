@@ -1,0 +1,43 @@
+.card {
+  display: flex;
+  align-items: flex-start;
+}
+
+.firstRow {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.firstColumn {
+  max-width: 40%;
+  display: flex;
+  justify-content: space-around;
+  gap: 10%;
+}
+
+.firstColumn img {
+  width: 100%;
+}
+
+.lastColumn {
+  width: 60%;
+}
+
+.lastColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lastRow {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+@media screen and (min-width: 768px) {
+  .firstColumn {
+    max-width: 20%;
+  }
+}

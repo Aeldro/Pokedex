@@ -1,0 +1,11 @@
+.cardsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  border-radius: 1rem;
+  gap: 1rem;
+  width: 100%;
+  max-width: 60rem;
+  background-color: white;
+}

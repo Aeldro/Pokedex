@@ -1,0 +1,140 @@
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background-color: #fff;
+  position: sticky;
+  top: 0;
+  height: 5rem;
+  z-index: 10;
+  background-color: var(--main-color);
+  margin-bottom: 1rem;
+}
+
+.logo {
+  width: 40%;
+  max-width: 18rem;
+  height: 100%;
+}
+
+.logoImg {
+  max-height: 100%;
+}
+
+.burger {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.burger span {
+  width: 100%;
+  height: 3px;
+  background-color: white;
+  box-shadow: 1px 0 black, -1px 0 black, 0 1px black, 0 -1px black,
+    1px 1px black, -1px -1px black, 1px -1px black, -1px 1px black;
+}
+
+.burger span:first-child {
+  transform: translateY(-0.4rem);
+}
+
+.burger span:last-child {
+  transform: translateY(0.4rem);
+}
+
+.menu {
+  position: fixed;
+  top: 0;
+  left: 100%;
+  width: 100%;
+  height: 100vh;
+  padding: 1rem;
+  padding-bottom: 2rem;
+  background-color: var(--main-color-opacity);
+  transition: all 0.5s ease-in-out;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  z-index: 10;
+}
+
+.showMenu {
+  left: 0;
+}
+
+.crossSection {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.menu button:first-child img {
+  width: 2rem;
+  height: 1.7rem;
+}
+
+.navButtonsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.navLink,
+.navLink * {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 1px 0 var(--light-black), -1px 0 var(--light-black),
+    0 1px var(--light-black), 0 -1px var(--light-black),
+    1px 1px var(--light-black), -1px -1px var(--light-black),
+    1px -1px var(--light-black), -1px 1px var(--light-black);
+  padding: 0.5rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.navLink *:hover {
+  color: var(--secondary-color);
+}
+
+@media screen and (min-width: 768px) {
+  .menu {
+    position: static;
+    flex-direction: row;
+    justify-content: flex-end;
+    top: 0;
+    left: 100%;
+    width: 100%;
+    height: auto;
+    padding: 0;
+    background-color: initial;
+  }
+
+  .burger {
+    display: none;
+  }
+
+  .crossSection {
+    display: none;
+  }
+
+  button .greenSpanRole {
+    color: lightgreen;
+  }
+
+  button .redSpanRole {
+    color: red;
+  }
+
+  .navButtonsContainer {
+    flex-direction: row-reverse;
+    height: 100%;
+  }
+}

@@ -8,9 +8,15 @@
   },
   "dependencies": {
     "@vitejs/plugin-react": "^3.0.1",
+    "argon2": "^0.30.3",
+    "axios": "^1.4.0",
+    "js-cookie": "^3.0.5",
+    "jsonwebtoken": "^9.0.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.13.0",
+    "sweetalert2": "^11.7.16",
     "vite": "^4.0.4"
   },
   "devDependencies": {

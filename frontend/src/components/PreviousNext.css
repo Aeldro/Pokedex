@@ -1,0 +1,8 @@
+.previousNext {
+  position: fixed;
+  bottom: 4%;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  gap: 4%;
+}

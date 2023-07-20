@@ -1,13 +1,39 @@
+/* eslint-disable */
+
 const express = require("express");
 
 const router = express.Router();
 
-const itemControllers = require("./controllers/itemControllers");
+const {
+  verifyEmailForSubscription,
+  hashPassword,
+  validatePassword,
+  verifyPassword,
+  verifyToken,
+  login,
+  hashNewPassword,
+} = require("./services/auth");
+const { add, getUserByEmail } = require("./controllers/userControllers");
+const {
+  getPokemonsList,
+  getPreviousPokemonsList,
+  getNextPokemonsList,
+} = require("./controllers/pokemonControllers");
 
-router.get("/items", itemControllers.browse);
-router.get("/items/:id", itemControllers.read);
-router.put("/items/:id", itemControllers.edit);
-router.post("/items", itemControllers.add);
-router.delete("/items/:id", itemControllers.destroy);
+// Authentication
+router.post(
+  "/signup",
+  verifyEmailForSubscription,
+  validatePassword,
+  hashPassword,
+  add
+);
+
+router.post("/login", getUserByEmail, verifyPassword, login);
+
+// Pokemons
+router.get("/pokemons", getPokemonsList);
+router.post("/pokemons/previous", getPreviousPokemonsList);
+router.post("/pokemons/next", getNextPokemonsList);
 
 module.exports = router;
