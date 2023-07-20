@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 const express = require("express");
 
 const router = express.Router();
@@ -27,6 +25,7 @@ const {
   getPokemonsList,
   getPreviousPokemonsList,
   getNextPokemonsList,
+  searchPokemonsList,
 } = require("./controllers/pokemonControllers");
 const {
   getCaught,
@@ -51,6 +50,7 @@ router.post("/login", getUserByEmail, verifyPassword, login);
 router.get("/pokemons", getPokemonsList);
 router.post("/pokemons/previous", getPreviousPokemonsList);
 router.post("/pokemons/next", getNextPokemonsList);
+router.get("/pokemons/pokedex/:search", searchPokemonsList);
 router.get("/pokemons/caught/:id", verifyToken, getCaught);
 router.post("/pokemons/caught", verifyToken, addCaught);
 router.delete("/pokemons/caught/:id", verifyToken, removeCaught);

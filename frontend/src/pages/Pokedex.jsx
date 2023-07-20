@@ -14,6 +14,7 @@ function Pokedex() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isNextAvailable, setIsNextAvailable] = useState(true);
   const [isPreviousAvailable, setIsPreviousAvailable] = useState(false);
+  const [search, setSearch] = useState("");
 
   const getPokemonsList = () => {
     setIsError(false);
@@ -114,6 +115,33 @@ function Pokedex() {
       });
   };
 
+  const searchPokemonsList = (e) => {
+    e.preventDefault();
+    if (search) {
+      setIsError(false);
+      setIsLoaded(false);
+      axios
+        .get(`${import.meta.env.VITE_BACKEND_URL}/pokemons/pokedex/${search}`)
+        .then((res) => {
+          setPokemonsList(res.data);
+          setIsLoaded(true);
+        })
+        .catch((err) => {
+          setIsError(true);
+          console.error(err);
+          Swal.fire({
+            icon: "error",
+            text: "Error retrieving data from api",
+            iconColor: "red",
+            width: 300,
+            confirmButtonColor: "black",
+          });
+        });
+    } else {
+      getPokemonsList();
+    }
+  };
+
   useEffect(() => {
     getPokemonsList();
   }, []);
@@ -128,6 +156,18 @@ function Pokedex() {
     <div>
       {isLoaded ? (
         <div className="cardsContainer">
+          <form onSubmit={(e) => searchPokemonsList(e)}>
+            <input
+              type="text"
+              className="textInput"
+              placeholder="Search a Pokemon"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <button type="submit" className="button">
+              Search
+            </button>
+          </form>
           <PreviousNext
             isNextAvailable={isNextAvailable}
             isPreviousAvailable={isPreviousAvailable}
