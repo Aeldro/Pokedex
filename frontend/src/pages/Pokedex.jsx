@@ -1,12 +1,7 @@
-/* eslint-disable */
-
 // Import des packages
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-
-// Import context
-import TokenContext from "../contexts/TokenContext";
 
 // Import des composants
 import Card from "../components/Card";
@@ -20,13 +15,12 @@ function Pokedex() {
   const [isNextAvailable, setIsNextAvailable] = useState(true);
   const [isPreviousAvailable, setIsPreviousAvailable] = useState(false);
 
-  const getPokemonsList = (e) => {
+  const getPokemonsList = () => {
     setIsError(false);
     setIsLoaded(false);
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/pokemons`)
       .then((res) => {
-        console.log(res.data);
         if (res.data.next) {
           setIsNextAvailable(true);
         }
@@ -39,10 +33,11 @@ function Pokedex() {
       })
       .catch((err) => {
         setIsError(true);
+        console.error(err);
         Swal.fire({
           icon: "error",
           text: "Error retrieving data from api",
-          iconColor: "#ca2061",
+          iconColor: "red",
           width: 300,
           confirmButtonColor: "black",
         });
@@ -57,7 +52,6 @@ function Pokedex() {
         currentPage,
       })
       .then((res) => {
-        console.log(res.data);
         if (res.data.next) {
           setIsNextAvailable(true);
         } else {
@@ -74,10 +68,11 @@ function Pokedex() {
       })
       .catch((err) => {
         setIsError(true);
+        console.error(err);
         Swal.fire({
           icon: "error",
           text: "Error retrieving data from api",
-          iconColor: "#ca2061",
+          iconColor: "red",
           width: 300,
           confirmButtonColor: "black",
         });
@@ -92,7 +87,6 @@ function Pokedex() {
         currentPage,
       })
       .then((res) => {
-        console.log(res.data);
         if (res.data.next) {
           setIsNextAvailable(true);
         } else {
@@ -109,10 +103,11 @@ function Pokedex() {
       })
       .catch((err) => {
         setIsError(true);
+        console.error(err);
         Swal.fire({
           icon: "error",
           text: "Error retrieving data from api",
-          iconColor: "#ca2061",
+          iconColor: "red",
           width: 300,
           confirmButtonColor: "black",
         });
@@ -122,9 +117,12 @@ function Pokedex() {
   useEffect(() => {
     getPokemonsList();
   }, []);
+
   useEffect(() => {
-    console.log(pokemonsList);
-  }, [pokemonsList]);
+    if (isError) {
+      setIsLoaded(true);
+    }
+  }, [isError, isLoaded]);
 
   return (
     <div>

@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
 
@@ -40,12 +38,36 @@ const validatePassword = (req, res, next) => {
     res.sendStatus(400);
   }
 };
+
+const validateNewPassword = (req, res, next) => {
+  const { newPassword, confirmNewPassword } = req.body;
+  if (newPassword === confirmNewPassword) {
+    next();
+  } else {
+    res.sendStatus(400);
+  }
+};
 const hashPassword = (req, res, next) => {
   argon2
     .hash(req.body.password, hashingOptions)
     .then((hashedPassword) => {
       req.body.hashedPassword = hashedPassword;
       delete req.body.password;
+      next();
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
+
+const hashNewPassword = (req, res, next) => {
+  argon2
+    .hash(req.body.newPassword, hashingOptions)
+    .then((hashedPassword) => {
+      req.body.hashedPassword = hashedPassword;
+      delete req.body.newPassword;
+      delete req.body.confirmNewPassword;
       next();
     })
     .catch((err) => {
@@ -94,67 +116,13 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-const verifyAdmin = (req, res, next) => {
-  try {
-    if (req.payload.role !== "admin") {
-      res.sendStatus(403);
-    } else {
-      next();
-    }
-  } catch (error) {
-    console.error(error);
-    res.sendStatus(401);
-  }
-};
-
-const verifyCompany = (req, res, next) => {
-  try {
-    if (req.payload.role !== "company") {
-      res.sendStatus(403);
-    } else {
-      next();
-    }
-  } catch (error) {
-    console.error(error);
-    res.sendStatus(401);
-  }
-};
-
-const verifyApplicant = (req, res, next) => {
-  try {
-    if (req.payload.role !== "applicant") {
-      res.sendStatus(403);
-    } else {
-      next();
-    }
-  } catch (error) {
-    console.error(error);
-    res.sendStatus(401);
-  }
-};
-
-const verifyAdminOrCompany = (req, res, next) => {
-  try {
-    if (req.payload.role !== "company" && req.payload.role !== "admin") {
-      res.sendStatus(403);
-    } else {
-      next();
-    }
-  } catch (error) {
-    console.error(error);
-    res.sendStatus(401);
-  }
-};
-
 module.exports = {
   verifyEmailForSubscription,
   hashPassword,
+  hashNewPassword,
   validatePassword,
+  validateNewPassword,
   verifyPassword,
   verifyToken,
-  verifyAdmin,
-  verifyCompany,
-  verifyAdminOrCompany,
   login,
-  verifyApplicant,
 };

@@ -115,6 +115,7 @@ a {
     1px -1px var(--light-black), -1px 1px var(--light-black);
   transition: all 0.2s ease-in-out;
   cursor: pointer;
+  align-self: center;
 }
 
 .button:hover {

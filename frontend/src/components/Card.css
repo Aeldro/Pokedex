@@ -12,8 +12,8 @@
 .firstColumn {
   max-width: 40%;
   display: flex;
-  justify-content: space-around;
-  gap: 10%;
+  justify-content: center;
+  align-items: center;
 }
 
 .firstColumn img {
@@ -21,13 +21,24 @@
 }
 
 .lastColumn {
-  width: 60%;
-}
-
-.lastColumn {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-around;
+  gap: 1rem;
+  min-width: 60%;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .lastRow {
@@ -36,8 +47,109 @@
   justify-content: center;
 }
 
+.caughtButton {
+  background-color: green;
+}
+
+.types {
+  display: flex;
+  justify-content: center;
+  gap: 10%;
+}
+
+.pokemonName {
+  font-size: 1.3rem;
+}
+
+.hrCard {
+  margin: 0 1rem;
+}
+
+/* Types */
+.type {
+  font-size: 1rem;
+  color: white;
+  text-shadow: 1px 0 var(--light-black), -1px 0 var(--light-black),
+    0 1px var(--light-black), 0 -1px var(--light-black),
+    1px 1px var(--light-black), -1px -1px var(--light-black),
+    1px -1px var(--light-black), -1px 1px var(--light-black);
+  padding: 0.5rem;
+  border-radius: 5rem;
+}
+
+.normal {
+  background-color: #a8a77a;
+}
+.fire {
+  background-color: #ee8130;
+}
+.water {
+  background-color: #6390f0;
+}
+.electric {
+  background-color: #f7d02c;
+}
+.grass {
+  background-color: #7ac74c;
+}
+.ice {
+  background-color: #96d9d6;
+}
+.fighting {
+  background-color: #c22e28;
+}
+.poison {
+  background-color: #a33ea1;
+}
+.ground {
+  background-color: #e2bf65;
+}
+.flying {
+  background-color: #a98ff3;
+}
+.psychic {
+  background-color: #f95587;
+}
+.bug {
+  background-color: #a6b91a;
+}
+.rock {
+  background-color: #b6a136;
+}
+.ghost {
+  background-color: #735797;
+}
+.dragon {
+  background-color: #6f35fc;
+}
+.dark {
+  background-color: #705746;
+}
+.steel {
+  background-color: #b7b7ce;
+}
+.fairy {
+  background-color: #d685ad;
+}
+
+@media screen and (min-width: 480px) {
+  .caracteristics {
+    font-size: 1.2rem;
+  }
+}
+
 @media screen and (min-width: 768px) {
   .firstColumn {
     max-width: 20%;
+  }
+
+  .types {
+    display: flex;
+    justify-content: center;
+    gap: 30%;
+  }
+
+  .pokemonName {
+    font-size: 1.5rem;
   }
 }

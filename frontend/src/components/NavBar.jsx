@@ -45,7 +45,7 @@ function NavBar() {
               }}
             >
               <Link to="/">
-                <p>&nbsp;Logout</p>
+                <p>Logout</p>
               </Link>
             </button>
 

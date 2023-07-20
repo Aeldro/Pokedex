@@ -1,5 +1,6 @@
 // Import des packages
 import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 
@@ -12,6 +13,7 @@ function Subscribe() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -27,26 +29,28 @@ function Subscribe() {
           Swal.fire({
             icon: "success",
             text: "Your account has been created",
-            iconColor: "#ca2061",
+            iconColor: "green",
             width: 300,
             confirmButtonColor: "black",
           });
+          navigate("/");
         } else {
           Swal.fire({
             icon: "error",
             text: "An error has occurred",
-            iconColor: "#ca2061",
+            iconColor: "red",
             width: 300,
             confirmButtonColor: "black",
           });
         }
       })
       .catch((err) => {
+        console.error(err);
         if (err.response.status === 403) {
           Swal.fire({
             icon: "error",
             text: "This email is already registered",
-            iconColor: "#ca2061",
+            iconColor: "red",
             width: 300,
             confirmButtonColor: "black",
           });
@@ -54,7 +58,7 @@ function Subscribe() {
           Swal.fire({
             icon: "error",
             text: "The password doesn't match",
-            iconColor: "#ca2061",
+            iconColor: "red",
             width: 300,
             confirmButtonColor: "black",
           });
@@ -62,7 +66,7 @@ function Subscribe() {
           Swal.fire({
             icon: "error",
             text: "An error has occurred (status 500)",
-            iconColor: "#ca2061",
+            iconColor: "red",
             width: 300,
             confirmButtonColor: "black",
           });
@@ -70,7 +74,7 @@ function Subscribe() {
           Swal.fire({
             icon: "error",
             text: "An error has occurred",
-            iconColor: "#ca2061",
+            iconColor: "red",
             width: 300,
             confirmButtonColor: "black",
           });
@@ -88,24 +92,28 @@ function Subscribe() {
             className="textInput"
             placeholder="Name"
             onChange={(e) => setName(e.target.value)}
+            required
           />
           <input
             type="email"
             className="textInput"
             placeholder="Email"
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
           <input
             type="password"
             className="textInput"
             placeholder="Password"
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
           <input
             type="password"
             className="textInput"
             placeholder="Password confirmation"
             onChange={(e) => setConfirmPassword(e.target.value)}
+            required
           />
           <button type="submit" className="button">
             Sign up

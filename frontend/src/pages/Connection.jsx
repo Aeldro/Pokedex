@@ -24,29 +24,23 @@ function Connection() {
         if (res.status === 200) {
           setUserCookie(res.data.token);
           navigate("/my-pokemons");
-          Swal.fire({
-            icon: "success",
-            text: "Login successful",
-            iconColor: "#ca2061",
-            width: 300,
-            confirmButtonColor: "black",
-          });
         } else {
           Swal.fire({
             icon: "error",
             text: "An error has occurred",
-            iconColor: "#ca2061",
+            iconColor: "red",
             width: 300,
             confirmButtonColor: "black",
           });
         }
       })
       .catch((err) => {
+        console.error(err);
         if (err.response.status === 401) {
           Swal.fire({
             icon: "error",
             text: "The email or password is incorrect",
-            iconColor: "#ca2061",
+            iconColor: "red",
             width: 300,
             confirmButtonColor: "black",
           });
@@ -54,7 +48,7 @@ function Connection() {
           Swal.fire({
             icon: "error",
             text: "An error has occurred",
-            iconColor: "#ca2061",
+            iconColor: "red",
             width: 300,
             confirmButtonColor: "black",
           });
@@ -72,12 +66,14 @@ function Connection() {
             className="textInput"
             placeholder="Email"
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
           <input
             type="password"
             className="textInput"
             placeholder="Password"
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
           <button type="submit" className="button">
             Login
