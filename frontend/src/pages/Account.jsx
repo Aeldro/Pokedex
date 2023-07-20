@@ -7,6 +7,9 @@ import { useNavigate } from "react-router-dom";
 // Import context
 import TokenContext from "../contexts/TokenContext";
 
+// Import des images
+import error from "../assets/error.png";
+
 function Account() {
   const { userToken, setUserCookie } = useContext(TokenContext);
   const [name, setName] = useState("");
@@ -54,7 +57,10 @@ function Account() {
             text: "Your account has been updated",
             iconColor: "green",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
         } else {
           Swal.fire({
@@ -62,7 +68,10 @@ function Account() {
             text: "An error has occurred",
             iconColor: "red",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
         }
       })
@@ -73,7 +82,10 @@ function Account() {
             text: "Modification failed",
             iconColor: "red",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
         } else if (err.response.status === 401) {
           Swal.fire({
@@ -81,7 +93,10 @@ function Account() {
             text: "You must be logged in",
             iconColor: "red",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
         } else if (err.response.status === 500) {
           Swal.fire({
@@ -89,7 +104,10 @@ function Account() {
             text: "An error has occurred (status 500)",
             iconColor: "red",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
         } else {
           Swal.fire({
@@ -97,7 +115,10 @@ function Account() {
             text: "An error has occurred",
             iconColor: "red",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
         }
       });
@@ -125,7 +146,10 @@ function Account() {
                 text: "Your account has been deleted",
                 iconColor: "green",
                 width: 300,
-                confirmButtonColor: "black",
+                buttonsStyling: false,
+                customClass: {
+                  confirmButton: "button",
+                },
               });
               navigate("/");
             } else {
@@ -134,7 +158,10 @@ function Account() {
                 text: "An error has occurred",
                 iconColor: "red",
                 width: 300,
-                confirmButtonColor: "black",
+                buttonsStyling: false,
+                customClass: {
+                  confirmButton: "button",
+                },
               });
             }
           })
@@ -145,7 +172,10 @@ function Account() {
                 text: "Delete failed",
                 iconColor: "red",
                 width: 300,
-                confirmButtonColor: "black",
+                buttonsStyling: false,
+                customClass: {
+                  confirmButton: "button",
+                },
               });
             } else if (err.response.status === 401) {
               Swal.fire({
@@ -153,7 +183,10 @@ function Account() {
                 text: "You must be logged in",
                 iconColor: "red",
                 width: 300,
-                confirmButtonColor: "black",
+                buttonsStyling: false,
+                customClass: {
+                  confirmButton: "button",
+                },
               });
             } else if (err.response.status === 500) {
               Swal.fire({
@@ -161,7 +194,10 @@ function Account() {
                 text: "An error has occurred (status 500)",
                 iconColor: "red",
                 width: 300,
-                confirmButtonColor: "black",
+                buttonsStyling: false,
+                customClass: {
+                  confirmButton: "button",
+                },
               });
             } else {
               Swal.fire({
@@ -169,7 +205,10 @@ function Account() {
                 text: "An error has occurred",
                 iconColor: "red",
                 width: 300,
-                confirmButtonColor: "black",
+                buttonsStyling: false,
+                customClass: {
+                  confirmButton: "button",
+                },
               });
             }
           });
@@ -195,12 +234,18 @@ function Account() {
       )
       .then((res) => {
         if (res.status === 204) {
+          setOldPassword("");
+          setNewPassword("");
+          setConfirmNewPassword("");
           Swal.fire({
             icon: "success",
             text: "The password has been updated",
             iconColor: "green",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
         }
       })
@@ -211,7 +256,10 @@ function Account() {
             text: "The password is incorrect",
             iconColor: "red",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
         } else if (err.response.status === 400) {
           Swal.fire({
@@ -219,7 +267,10 @@ function Account() {
             text: "Both passwords must be the same",
             iconColor: "red",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
         } else if (err.response.status === 500) {
           Swal.fire({
@@ -227,7 +278,10 @@ function Account() {
             text: "An error has occurred (status 500)",
             iconColor: "red",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
         } else {
           Swal.fire({
@@ -235,7 +289,10 @@ function Account() {
             text: "An error has occurred",
             iconColor: "red",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
         }
       });
@@ -314,7 +371,8 @@ function Account() {
           </button>
         </div>
       ) : (
-        <div className="globalContainer">
+        <div className="globalContainer centeredContainer">
+          <img src={error} alt="Error icon" className="errorImg" />
           <h3 className="error">You must be logged in</h3>
         </div>
       )}

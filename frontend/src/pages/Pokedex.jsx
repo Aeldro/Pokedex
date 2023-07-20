@@ -7,6 +7,10 @@ import Swal from "sweetalert2";
 import Card from "../components/Card";
 import PreviousNext from "../components/PreviousNext";
 
+// Import des images
+import pokeball from "../assets/pokeball.png";
+import error from "../assets/error.png";
+
 function Pokedex() {
   const [pokemonsList, setPokemonsList] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -40,7 +44,10 @@ function Pokedex() {
           text: "Error retrieving data from api",
           iconColor: "red",
           width: 300,
-          confirmButtonColor: "black",
+          buttonsStyling: false,
+          customClass: {
+            confirmButton: "button",
+          },
         });
       });
   };
@@ -75,7 +82,10 @@ function Pokedex() {
           text: "Error retrieving data from api",
           iconColor: "red",
           width: 300,
-          confirmButtonColor: "black",
+          buttonsStyling: false,
+          customClass: {
+            confirmButton: "button",
+          },
         });
       });
   };
@@ -110,7 +120,10 @@ function Pokedex() {
           text: "Error retrieving data from api",
           iconColor: "red",
           width: 300,
-          confirmButtonColor: "black",
+          buttonsStyling: false,
+          customClass: {
+            confirmButton: "button",
+          },
         });
       });
   };
@@ -134,7 +147,10 @@ function Pokedex() {
             text: "Error retrieving data from api",
             iconColor: "red",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
         });
     } else {
@@ -160,7 +176,7 @@ function Pokedex() {
             <input
               type="text"
               className="textInput"
-              placeholder="Search a Pokemon"
+              placeholder="Search a Pokemon..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -179,13 +195,19 @@ function Pokedex() {
           ))}
         </div>
       ) : (
-        <div className="globalContainer">
+        <div className="globalContainer centeredContainer">
+          <img
+            src={pokeball}
+            className="spinningPokeball"
+            alt="Spinning pokeball"
+          />
           <h3 className="info">Loading...</h3>
         </div>
       )}
       {isError ? (
-        <div className="globalContainer">
-          <h3 className="error"> Loading has failed</h3>
+        <div className="globalContainer centeredContainer">
+          <img src={error} alt="Error icon" className="errorImg" />
+          <h3 className="error">Loading has failed</h3>
         </div>
       ) : null}
     </div>

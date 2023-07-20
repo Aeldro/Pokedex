@@ -7,6 +7,9 @@ import Swal from "sweetalert2";
 // Import context
 import TokenContext from "../contexts/TokenContext";
 
+// Import des images
+import success from "../assets/success.png";
+
 function Subscribe() {
   const { userToken } = useContext(TokenContext);
   const [name, setName] = useState("");
@@ -31,7 +34,10 @@ function Subscribe() {
             text: "Your account has been created",
             iconColor: "green",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
           navigate("/");
         } else {
@@ -40,7 +46,10 @@ function Subscribe() {
             text: "An error has occurred",
             iconColor: "red",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
         }
       })
@@ -52,7 +61,10 @@ function Subscribe() {
             text: "This email is already registered",
             iconColor: "red",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
         } else if (err.response.status === 400) {
           Swal.fire({
@@ -60,7 +72,10 @@ function Subscribe() {
             text: "The password doesn't match",
             iconColor: "red",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
         } else if (err.response.status === 500) {
           Swal.fire({
@@ -68,7 +83,10 @@ function Subscribe() {
             text: "An error has occurred (status 500)",
             iconColor: "red",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
         } else {
           Swal.fire({
@@ -76,7 +94,10 @@ function Subscribe() {
             text: "An error has occurred",
             iconColor: "red",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
         }
       });
@@ -85,7 +106,10 @@ function Subscribe() {
   return (
     <div>
       {!userToken ? (
-        <form onSubmit={(e) => handleSubmit(e)} className="form">
+        <form
+          onSubmit={(e) => handleSubmit(e)}
+          className="form  centeredContainer"
+        >
           <h1>Sign up</h1>
           <input
             type="text"
@@ -120,7 +144,8 @@ function Subscribe() {
           </button>
         </form>
       ) : (
-        <div className="globalContainer">
+        <div className="globalContainer centeredContainer">
+          <img src={success} alt="Success icon" className="successImg" />
           <h3 className="info">You are already logged in</h3>
         </div>
       )}

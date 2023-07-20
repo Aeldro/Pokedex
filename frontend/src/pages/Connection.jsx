@@ -7,6 +7,9 @@ import Swal from "sweetalert2";
 // Import context
 import TokenContext from "../contexts/TokenContext";
 
+// Import des images
+import success from "../assets/success.png";
+
 function Connection() {
   const { userToken, setUserCookie } = useContext(TokenContext);
   const [email, setEmail] = useState("");
@@ -30,7 +33,10 @@ function Connection() {
             text: "An error has occurred",
             iconColor: "red",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
         }
       })
@@ -42,7 +48,10 @@ function Connection() {
             text: "The email or password is incorrect",
             iconColor: "red",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
         } else {
           Swal.fire({
@@ -50,7 +59,10 @@ function Connection() {
             text: "An error has occurred",
             iconColor: "red",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
         }
       });
@@ -59,7 +71,10 @@ function Connection() {
   return (
     <div>
       {!userToken ? (
-        <form onSubmit={(e) => handleSubmit(e)} className="form">
+        <form
+          onSubmit={(e) => handleSubmit(e)}
+          className="form centeredContainer"
+        >
           <h1>Login</h1>
           <input
             type="email"
@@ -80,7 +95,8 @@ function Connection() {
           </button>
         </form>
       ) : (
-        <div className="globalContainer">
+        <div className="globalContainer centeredContainer">
+          <img src={success} alt="Success icon" className="sucessImg" />
           <h3 className="info">You are already logged in</h3>
         </div>
       )}

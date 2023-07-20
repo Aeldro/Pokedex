@@ -8,7 +8,7 @@
   top: 0;
   height: 5rem;
   z-index: 10;
-  background-color: var(--main-color);
+  background-color: var(--main-color-opacity);
   margin-bottom: 1rem;
 }
 
@@ -70,6 +70,7 @@
 
 .crossSection {
   width: 100%;
+  height: 3rem;
   display: flex;
   justify-content: flex-end;
 }

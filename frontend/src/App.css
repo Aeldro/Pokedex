@@ -72,6 +72,13 @@ a {
   background-color: white;
 }
 
+.centeredContainer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 /* Form */
 
 .form {
@@ -144,4 +151,28 @@ a {
     0 1px var(--shadow_initial), 0 -1px var(--shadow_initial),
     1px 1px var(--shadow_initial), -1px -1px var(--shadow_initial),
     1px -1px var(--shadow_initial), -1px 1px var(--shadow_initial);
+}
+
+.successImg,
+.errorImg {
+  width: 6rem;
+  max-width: 30%;
+}
+
+.spinningPokeball {
+  display: block;
+  margin: auto;
+  width: 100px;
+  animation: rotation 1s linear infinite;
+  position: relative;
+  top: 50%;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

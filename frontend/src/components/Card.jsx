@@ -51,7 +51,10 @@ function Card({ pokemon }) {
             text: "Congratulations ! You caught this Pokemon !",
             iconColor: "green",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
         } else {
           Swal.fire({
@@ -59,7 +62,10 @@ function Card({ pokemon }) {
             text: "An error has occurred",
             iconColor: "red",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
         }
         getCaught();
@@ -73,7 +79,10 @@ function Card({ pokemon }) {
             text: "You must be logged in",
             iconColor: "red",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
         } else {
           Swal.fire({
@@ -81,7 +90,10 @@ function Card({ pokemon }) {
             text: "An error occured",
             iconColor: "red",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
         }
       });
@@ -112,7 +124,10 @@ function Card({ pokemon }) {
             text: "An error has occurred",
             iconColor: "red",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
         }
         getCaught();
@@ -126,7 +141,6 @@ function Card({ pokemon }) {
             text: "You must be logged in",
             iconColor: "red",
             width: 300,
-            confirmButtonColor: "black",
           });
         } else {
           Swal.fire({
@@ -134,7 +148,10 @@ function Card({ pokemon }) {
             text: "An error occured",
             iconColor: "red",
             width: 300,
-            confirmButtonColor: "black",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "button",
+            },
           });
         }
       });
