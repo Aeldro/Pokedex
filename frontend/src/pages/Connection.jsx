@@ -1,6 +1,5 @@
 // Import des packages
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 
@@ -14,7 +13,6 @@ function Connection() {
   const { userToken, setUserCookie } = useContext(TokenContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -26,7 +24,6 @@ function Connection() {
       .then((res) => {
         if (res.status === 200) {
           setUserCookie(res.data.token);
-          navigate("/my-pokemons");
         } else {
           Swal.fire({
             icon: "error",
@@ -96,8 +93,8 @@ function Connection() {
         </form>
       ) : (
         <div className="globalContainer centeredContainer">
-          <img src={success} alt="Success icon" className="sucessImg" />
-          <h3 className="info">You are already logged in</h3>
+          <img src={success} alt="Success icon" className="successImg" />
+          <h3 className="info">You are logged in</h3>
         </div>
       )}
     </div>

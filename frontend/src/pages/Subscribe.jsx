@@ -146,7 +146,7 @@ function Subscribe() {
       ) : (
         <div className="globalContainer centeredContainer">
           <img src={success} alt="Success icon" className="successImg" />
-          <h3 className="info">You are already logged in</h3>
+          <h3 className="info">You are logged in</h3>
         </div>
       )}
     </div>
