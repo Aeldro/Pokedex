@@ -5,7 +5,10 @@ require("dotenv").config();
 
 const getPokemonsList = async (req, res) => {
   try {
-    const result = await axios.get(`${process.env.API_URL}?offset=0&limit=20`);
+    const currentPage = req.body.currentPage;
+    const result = await axios.get(
+      `${process.env.API_URL}?offset=${20 * currentPage - 20}&limit=20`
+    );
     const pokemonsList = [];
 
     for (let i = 0; i < result.data.results.length; i += 1) {
@@ -19,7 +22,6 @@ const getPokemonsList = async (req, res) => {
     }
     const data = {
       pokemonsList,
-      newPage: 1,
     };
     if (result.data.previous) {
       data.previous = true;
@@ -31,11 +33,15 @@ const getPokemonsList = async (req, res) => {
     } else {
       data.next = false;
     }
+
+    // Set the first character of the name in uppercase
     for (let i = 0; i < data.pokemonsList.length; i += 1) {
       data.pokemonsList[i].name =
         data.pokemonsList[i].name[0].toUpperCase() +
         data.pokemonsList[i].name.slice(1);
     }
+
+    // Set the first character of the types in uppercase
     for (let i = 0; i < data.pokemonsList.length; i += 1) {
       data.pokemonsList[i].types[0].type.name =
         data.pokemonsList[i].types[0].type.name[0].toUpperCase() +

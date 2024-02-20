@@ -47,7 +47,7 @@ router.post(
 router.post("/login", getUserByEmail, verifyPassword, login);
 
 // Pokemons
-router.get("/pokemons", getPokemonsList);
+router.post("/pokemons", getPokemonsList);
 router.post("/pokemons/previous", getPreviousPokemonsList);
 router.post("/pokemons/next", getNextPokemonsList);
 router.get("/pokemons/pokedex/:search", searchPokemonsList);

@@ -24,16 +24,21 @@ function Pokedex() {
     setIsError(false);
     setIsLoaded(false);
     axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/pokemons`)
+      .post(`${import.meta.env.VITE_BACKEND_URL}/pokemons`, {
+        currentPage,
+      })
       .then((res) => {
         if (res.data.next) {
           setIsNextAvailable(true);
+        } else {
+          setIsNextAvailable(false);
         }
         if (res.data.previous) {
           setIsPreviousAvailable(true);
+        } else {
+          setIsPreviousAvailable(false);
         }
         setPokemonsList(res.data.pokemonsList);
-        setCurrentPage(res.data.newPage);
         setIsLoaded(true);
       })
       .catch((err) => {
@@ -53,79 +58,15 @@ function Pokedex() {
   };
 
   const getPreviousPokemonsList = () => {
-    setIsError(false);
-    setIsLoaded(false);
-    axios
-      .post(`${import.meta.env.VITE_BACKEND_URL}/pokemons/previous`, {
-        currentPage,
-      })
-      .then((res) => {
-        if (res.data.next) {
-          setIsNextAvailable(true);
-        } else {
-          setIsNextAvailable(false);
-        }
-        if (res.data.previous) {
-          setIsPreviousAvailable(true);
-        } else {
-          setIsPreviousAvailable(false);
-        }
-        setPokemonsList(res.data.pokemonsList);
-        setCurrentPage(res.data.newPage);
-        setIsLoaded(true);
-      })
-      .catch((err) => {
-        setIsError(true);
-        console.error(err);
-        Swal.fire({
-          icon: "error",
-          text: "Error retrieving data from api",
-          iconColor: "red",
-          width: 300,
-          buttonsStyling: false,
-          customClass: {
-            confirmButton: "button",
-          },
-        });
-      });
+    if (isPreviousAvailable) {
+      setCurrentPage(currentPage - 1);
+    }
   };
 
   const getNextPokemonsList = () => {
-    setIsError(false);
-    setIsLoaded(false);
-    axios
-      .post(`${import.meta.env.VITE_BACKEND_URL}/pokemons/next`, {
-        currentPage,
-      })
-      .then((res) => {
-        if (res.data.next) {
-          setIsNextAvailable(true);
-        } else {
-          setIsNextAvailable(false);
-        }
-        if (res.data.previous) {
-          setIsPreviousAvailable(true);
-        } else {
-          setIsPreviousAvailable(false);
-        }
-        setPokemonsList(res.data.pokemonsList);
-        setCurrentPage(res.data.newPage);
-        setIsLoaded(true);
-      })
-      .catch((err) => {
-        setIsError(true);
-        console.error(err);
-        Swal.fire({
-          icon: "error",
-          text: "Error retrieving data from api",
-          iconColor: "red",
-          width: 300,
-          buttonsStyling: false,
-          customClass: {
-            confirmButton: "button",
-          },
-        });
-      });
+    if (isNextAvailable) {
+      setCurrentPage(currentPage + 1);
+    }
   };
 
   const searchPokemonsList = (e) => {
@@ -160,7 +101,7 @@ function Pokedex() {
 
   useEffect(() => {
     getPokemonsList();
-  }, []);
+  }, [currentPage]);
 
   useEffect(() => {
     if (isError) {
