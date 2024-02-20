@@ -6,10 +6,12 @@ require("dotenv").config();
 const getPokemonsList = async (req, res) => {
   try {
     const currentPage = req.body.currentPage;
+    const limit = 20;
     const result = await axios.get(
-      `${process.env.API_URL}?offset=${20 * currentPage - 20}&limit=20`
+      `${process.env.API_URL}?offset=${20 * currentPage - 20}&limit=${limit}`
     );
     const pokemonsList = [];
+    const numberOfPages = Math.ceil(result.data.count / limit);
 
     for (let i = 0; i < result.data.results.length; i += 1) {
       try {
@@ -22,6 +24,7 @@ const getPokemonsList = async (req, res) => {
     }
     const data = {
       pokemonsList,
+      numberOfPages,
     };
     if (result.data.previous) {
       data.previous = true;

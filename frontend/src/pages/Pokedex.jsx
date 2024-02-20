@@ -16,6 +16,7 @@ function Pokedex() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isError, setIsError] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [numberOfPages, setNumberOfPages] = useState(0);
   const [isNextAvailable, setIsNextAvailable] = useState(true);
   const [isPreviousAvailable, setIsPreviousAvailable] = useState(false);
   const [search, setSearch] = useState("");
@@ -39,6 +40,7 @@ function Pokedex() {
           setIsPreviousAvailable(false);
         }
         setPokemonsList(res.data.pokemonsList);
+        setNumberOfPages(res.data.numberOfPages);
         setIsLoaded(true);
       })
       .catch((err) => {
@@ -126,6 +128,9 @@ function Pokedex() {
             </button>
           </form>
           <PreviousNext
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            numberOfPages={numberOfPages}
             isNextAvailable={isNextAvailable}
             isPreviousAvailable={isPreviousAvailable}
             getPreviousPokemonsList={getPreviousPokemonsList}

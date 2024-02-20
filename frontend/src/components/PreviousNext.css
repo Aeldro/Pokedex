@@ -1,8 +1,23 @@
 .previousNext {
   position: fixed;
-  bottom: 4%;
-  width: 100vw;
   display: flex;
-  justify-content: center;
-  gap: 4%;
+  bottom: 2%;
+  width: 20rem;
+  justify-content: space-around;
+  align-items: center;
+  background-color: var(--light-grey-opacity);
+  backdrop-filter: blur(5px);
+  border-radius: 10rem;
+  padding: 0.5rem;
+  box-shadow: var(--shadow_initial);
+}
+
+.previousNext * {
+  margin: 0 0.3rem;
+}
+
+@media screen and (max-width: 350px) {
+  .previousNext {
+    width: 19rem;
+  }
 }
