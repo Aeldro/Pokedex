@@ -6,8 +6,6 @@ function PreviousNext({
   numberOfPages,
   isNextAvailable,
   isPreviousAvailable,
-  getPreviousPokemonsList,
-  getNextPokemonsList,
 }) {
   return (
     <div className="previousNext">
@@ -30,7 +28,7 @@ function PreviousNext({
         }`}
         onClick={() => {
           if (isPreviousAvailable) {
-            getPreviousPokemonsList();
+            setCurrentPage(currentPage - 1);
           }
         }}
       >
@@ -118,7 +116,7 @@ function PreviousNext({
         className={`numberButton ${!isNextAvailable ? "numberDisabled" : ""}`}
         onClick={() => {
           if (isNextAvailable) {
-            getNextPokemonsList();
+            setCurrentPage(currentPage + 1);
           }
         }}
       >

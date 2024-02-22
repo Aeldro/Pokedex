@@ -4,11 +4,11 @@ const models = require("../models");
 require("dotenv").config();
 
 const getPokemonsList = async (req, res) => {
+  const currentPage = req.body.currentPage;
+  const limit = req.body.pageLimit;
   try {
-    const currentPage = req.body.currentPage;
-    const limit = 20;
     const result = await axios.get(
-      `${process.env.API_URL}?offset=${20 * currentPage - 20}&limit=${limit}`
+      `${process.env.API_URL}?offset=${limit * currentPage - limit}&limit=${limit}`
     );
     const pokemonsList = [];
     const numberOfPages = Math.ceil(result.data.count / limit);
@@ -45,112 +45,6 @@ const getPokemonsList = async (req, res) => {
     }
 
     // Set the first character of the types in uppercase
-    for (let i = 0; i < data.pokemonsList.length; i += 1) {
-      data.pokemonsList[i].types[0].type.name =
-        data.pokemonsList[i].types[0].type.name[0].toUpperCase() +
-        data.pokemonsList[i].types[0].type.name.slice(1);
-      if (data.pokemonsList[i].types[1]) {
-        data.pokemonsList[i].types[1].type.name =
-          data.pokemonsList[i].types[1].type.name[0].toUpperCase() +
-          data.pokemonsList[i].types[1].type.name.slice(1);
-      }
-    }
-    res.status(200).json(data);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error retrieving data from api");
-  }
-};
-
-const getPreviousPokemonsList = async (req, res) => {
-  try {
-    const newPage = req.body.currentPage - 1;
-    const result = await axios.get(
-      `${process.env.API_URL}?offset=${newPage * 20 - 20}&limit=20`
-    );
-    const pokemonsList = [];
-
-    for (let i = 0; i < result.data.results.length; i += 1) {
-      try {
-        const pokemon = await axios.get(result.data.results[i].url);
-        pokemonsList.push(pokemon.data);
-      } catch (err) {
-        console.error(err);
-        return res.status(500).send("Error retrieving data from api");
-      }
-    }
-    const data = {
-      pokemonsList,
-      newPage,
-    };
-    if (result.data.previous) {
-      data.previous = true;
-    } else {
-      data.previous = false;
-    }
-    if (result.data.next) {
-      data.next = true;
-    } else {
-      data.next = false;
-    }
-    for (let i = 0; i < data.pokemonsList.length; i += 1) {
-      data.pokemonsList[i].name =
-        data.pokemonsList[i].name[0].toUpperCase() +
-        data.pokemonsList[i].name.slice(1);
-    }
-    for (let i = 0; i < data.pokemonsList.length; i += 1) {
-      data.pokemonsList[i].types[0].type.name =
-        data.pokemonsList[i].types[0].type.name[0].toUpperCase() +
-        data.pokemonsList[i].types[0].type.name.slice(1);
-      if (data.pokemonsList[i].types[1]) {
-        data.pokemonsList[i].types[1].type.name =
-          data.pokemonsList[i].types[1].type.name[0].toUpperCase() +
-          data.pokemonsList[i].types[1].type.name.slice(1);
-      }
-    }
-    res.status(200).json(data);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error retrieving data from api");
-  }
-};
-
-const getNextPokemonsList = async (req, res) => {
-  try {
-    const newPage = req.body.currentPage + 1;
-    const result = await axios.get(
-      `${process.env.API_URL}?offset=${newPage * 20 - 20}&limit=20`
-    );
-    const pokemonsList = [];
-
-    for (let i = 0; i < result.data.results.length; i += 1) {
-      try {
-        const pokemon = await axios.get(result.data.results[i].url);
-        pokemonsList.push(pokemon.data);
-      } catch (err) {
-        console.error(err);
-        return res.status(500).send("Error retrieving data from api");
-      }
-    }
-    const data = {
-      pokemonsList,
-      newPage,
-    };
-    if (result.data.previous) {
-      data.previous = true;
-    } else {
-      data.previous = false;
-    }
-    if (result.data.next) {
-      data.next = true;
-    } else {
-      data.next = false;
-    }
-    for (let i = 0; i < data.pokemonsList.length; i += 1) {
-      data.pokemonsList[i].name =
-        data.pokemonsList[i].name[0].toUpperCase() +
-        data.pokemonsList[i].name.slice(1);
-    }
     for (let i = 0; i < data.pokemonsList.length; i += 1) {
       data.pokemonsList[i].types[0].type.name =
         data.pokemonsList[i].types[0].type.name[0].toUpperCase() +
@@ -212,7 +106,5 @@ const searchPokemonsList = async (req, res) => {
 
 module.exports = {
   getPokemonsList,
-  getPreviousPokemonsList,
-  getNextPokemonsList,
   searchPokemonsList,
 };

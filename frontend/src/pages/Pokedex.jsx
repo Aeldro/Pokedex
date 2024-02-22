@@ -17,9 +17,11 @@ function Pokedex() {
   const [isError, setIsError] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [numberOfPages, setNumberOfPages] = useState(0);
+  const [pageLimit, setPageLimit] = useState(20);
   const [isNextAvailable, setIsNextAvailable] = useState(true);
   const [isPreviousAvailable, setIsPreviousAvailable] = useState(false);
   const [search, setSearch] = useState("");
+  const [searchingByName, setSearchingByName] = useState(false);
 
   const getPokemonsList = () => {
     setIsError(false);
@@ -27,6 +29,7 @@ function Pokedex() {
     axios
       .post(`${import.meta.env.VITE_BACKEND_URL}/pokemons`, {
         currentPage,
+        pageLimit,
       })
       .then((res) => {
         if (res.data.next) {
@@ -59,20 +62,7 @@ function Pokedex() {
       });
   };
 
-  const getPreviousPokemonsList = () => {
-    if (isPreviousAvailable) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const getNextPokemonsList = () => {
-    if (isNextAvailable) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const searchPokemonsList = (e) => {
-    e.preventDefault();
+  const searchPokemonsList = () => {
     if (search) {
       setIsError(false);
       setIsLoaded(false);
@@ -102,7 +92,11 @@ function Pokedex() {
   };
 
   useEffect(() => {
-    getPokemonsList();
+    if (searchingByName) {
+      searchPokemonsList();
+    } else {
+      getPokemonsList();
+    }
   }, [currentPage]);
 
   useEffect(() => {
@@ -115,7 +109,19 @@ function Pokedex() {
     <div>
       {isLoaded ? (
         <div className="cardsContainer">
-          <form onSubmit={(e) => searchPokemonsList(e)}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              setCurrentPage(1);
+              if (search) {
+                setSearchingByName(true);
+                searchPokemonsList();
+              } else {
+                setSearchingByName(false);
+                getPokemonsList();
+              }
+            }}
+          >
             <input
               type="text"
               className="textInput"
@@ -127,14 +133,19 @@ function Pokedex() {
               Search
             </button>
           </form>
+          <input
+            type="number"
+            className="textInput"
+            placeholder="Limit per page..."
+            value={pageLimit}
+            onChange={(e) => setPageLimit(e.target.value)}
+          />
           <PreviousNext
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             numberOfPages={numberOfPages}
             isNextAvailable={isNextAvailable}
             isPreviousAvailable={isPreviousAvailable}
-            getPreviousPokemonsList={getPreviousPokemonsList}
-            getNextPokemonsList={getNextPokemonsList}
           />
           {pokemonsList.map((pokemon) => (
             <Card key={pokemon.id} pokemon={pokemon} />

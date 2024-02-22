@@ -23,8 +23,6 @@ const {
 } = require("./controllers/userControllers");
 const {
   getPokemonsList,
-  getPreviousPokemonsList,
-  getNextPokemonsList,
   searchPokemonsList,
 } = require("./controllers/pokemonControllers");
 const {
@@ -48,8 +46,6 @@ router.post("/login", getUserByEmail, verifyPassword, login);
 
 // Pokemons
 router.post("/pokemons", getPokemonsList);
-router.post("/pokemons/previous", getPreviousPokemonsList);
-router.post("/pokemons/next", getNextPokemonsList);
 router.get("/pokemons/pokedex/:search", searchPokemonsList);
 router.get("/pokemons/caught/:id", verifyToken, getCaught);
 router.post("/pokemons/caught", verifyToken, addCaught);
