@@ -22,6 +22,7 @@ function Pokedex() {
   const [isPreviousAvailable, setIsPreviousAvailable] = useState(false);
   const [search, setSearch] = useState("");
   const [searchingByName, setSearchingByName] = useState(false);
+  const [startFetching, setStartFetching] = useState(0);
 
   const getPokemonsList = () => {
     setIsError(false);
@@ -30,6 +31,8 @@ function Pokedex() {
       .post(`${import.meta.env.VITE_BACKEND_URL}/pokemons`, {
         currentPage,
         pageLimit,
+        searchingByName,
+        search,
       })
       .then((res) => {
         if (res.data.next) {
@@ -51,7 +54,7 @@ function Pokedex() {
         console.error(err);
         Swal.fire({
           icon: "error",
-          text: "Error retrieving data from api",
+          text: err.response.data,
           iconColor: "red",
           width: 300,
           buttonsStyling: false,
@@ -62,42 +65,9 @@ function Pokedex() {
       });
   };
 
-  const searchPokemonsList = () => {
-    if (search) {
-      setIsError(false);
-      setIsLoaded(false);
-      axios
-        .get(`${import.meta.env.VITE_BACKEND_URL}/pokemons/pokedex/${search}`)
-        .then((res) => {
-          setPokemonsList(res.data);
-          setIsLoaded(true);
-        })
-        .catch((err) => {
-          setIsError(true);
-          console.error(err);
-          Swal.fire({
-            icon: "error",
-            text: "Error retrieving data from api",
-            iconColor: "red",
-            width: 300,
-            buttonsStyling: false,
-            customClass: {
-              confirmButton: "button",
-            },
-          });
-        });
-    } else {
-      getPokemonsList();
-    }
-  };
-
   useEffect(() => {
-    if (searchingByName) {
-      searchPokemonsList();
-    } else {
-      getPokemonsList();
-    }
-  }, [currentPage]);
+    getPokemonsList();
+  }, [startFetching]);
 
   useEffect(() => {
     if (isError) {
@@ -115,11 +85,10 @@ function Pokedex() {
               setCurrentPage(1);
               if (search) {
                 setSearchingByName(true);
-                searchPokemonsList();
               } else {
                 setSearchingByName(false);
-                getPokemonsList();
               }
+              setStartFetching(startFetching + 1);
             }}
           >
             <input
@@ -146,6 +115,8 @@ function Pokedex() {
             numberOfPages={numberOfPages}
             isNextAvailable={isNextAvailable}
             isPreviousAvailable={isPreviousAvailable}
+            startFetching={startFetching}
+            setStartFetching={setStartFetching}
           />
           {pokemonsList.map((pokemon) => (
             <Card key={pokemon.id} pokemon={pokemon} />

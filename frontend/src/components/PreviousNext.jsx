@@ -6,6 +6,8 @@ function PreviousNext({
   numberOfPages,
   isNextAvailable,
   isPreviousAvailable,
+  startFetching,
+  setStartFetching,
 }) {
   return (
     <div className="previousNext">
@@ -16,6 +18,7 @@ function PreviousNext({
         }`}
         onClick={() => {
           setCurrentPage(1);
+          setStartFetching(startFetching + 1);
         }}
       >
         &lt;&lt;
@@ -29,6 +32,7 @@ function PreviousNext({
         onClick={() => {
           if (isPreviousAvailable) {
             setCurrentPage(currentPage - 1);
+            setStartFetching(startFetching + 1);
           }
         }}
       >
@@ -41,6 +45,7 @@ function PreviousNext({
           className="numberButton"
           onClick={() => {
             setCurrentPage(currentPage - 3);
+            setStartFetching(startFetching + 1);
           }}
         >
           {currentPage - 3}
@@ -53,6 +58,7 @@ function PreviousNext({
           className="numberButton"
           onClick={() => {
             setCurrentPage(currentPage - 2);
+            setStartFetching(startFetching + 1);
           }}
         >
           {currentPage - 2}
@@ -65,6 +71,7 @@ function PreviousNext({
           className="numberButton"
           onClick={() => {
             setCurrentPage(currentPage - 1);
+            setStartFetching(startFetching + 1);
           }}
         >
           {currentPage - 1}
@@ -81,6 +88,7 @@ function PreviousNext({
           className="numberButton"
           onClick={() => {
             setCurrentPage(currentPage + 1);
+            setStartFetching(startFetching + 1);
           }}
         >
           {currentPage + 1}
@@ -93,6 +101,7 @@ function PreviousNext({
           className="numberButton"
           onClick={() => {
             setCurrentPage(currentPage + 2);
+            setStartFetching(startFetching + 1);
           }}
         >
           {currentPage + 2}
@@ -105,6 +114,7 @@ function PreviousNext({
           className="numberButton"
           onClick={() => {
             setCurrentPage(currentPage + 3);
+            setStartFetching(startFetching + 1);
           }}
         >
           {currentPage + 3}
@@ -117,6 +127,7 @@ function PreviousNext({
         onClick={() => {
           if (isNextAvailable) {
             setCurrentPage(currentPage + 1);
+            setStartFetching(startFetching + 1);
           }
         }}
       >
@@ -128,6 +139,7 @@ function PreviousNext({
         className={`numberButton ${!isNextAvailable ? "numberDisabled" : ""}`}
         onClick={() => {
           setCurrentPage(numberOfPages);
+          setStartFetching(startFetching + 1);
         }}
       >
         &gt;&gt;

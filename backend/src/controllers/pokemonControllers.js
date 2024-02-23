@@ -3,14 +3,16 @@ const axios = require("axios");
 const models = require("../models");
 require("dotenv").config();
 
-const getPokemonsList = async (req, res) => {
+const getPokemonsListWithoutFilter = async (req, res) => {
   const currentPage = req.body.currentPage;
   const limit = req.body.pageLimit;
+  const pokemonsList = [];
   try {
     const result = await axios.get(
-      `${process.env.API_URL}?offset=${limit * currentPage - limit}&limit=${limit}`
+      `${process.env.API_URL}?offset=${
+        limit * currentPage - limit
+      }&limit=${limit}`
     );
-    const pokemonsList = [];
     const numberOfPages = Math.ceil(result.data.count / limit);
 
     for (let i = 0; i < result.data.results.length; i += 1) {
@@ -62,21 +64,22 @@ const getPokemonsList = async (req, res) => {
   }
 };
 
-const searchPokemonsList = async (req, res) => {
-  const searchString = req.params.search;
+const getPokemonsListWithNameFilter = async (req, res) => {
+  const currentPage = req.body.currentPage;
+  const limit = req.body.pageLimit;
+  const searchString = req.body.search;
   const pokemonsList = [];
   try {
     const result = await axios.get(`${process.env.API_URL}`);
     const count = result.data.count;
     const dataResult = await axios.get(`${process.env.API_URL}?limit=${count}`);
-    const filteredData = dataResult.data.results.filter((pokemon) => {
-      if (pokemon.name.toLowerCase().includes(searchString.toLowerCase())) {
-        return pokemon;
-      }
-    });
-    for (let i = 0; i < filteredData.length; i += 1) {
+    const filteredData = dataResult.data.results.filter((pokemon) =>
+      pokemon.name.toLowerCase().includes(searchString.toLowerCase())
+    );
+    const limitedFilteredData = filteredData.slice(limit * currentPage - limit, limit * currentPage);
+    for (let i = 0; i < limitedFilteredData.length; i += 1) {
       try {
-        const pokemon = await axios.get(filteredData[i].url);
+        const pokemon = await axios.get(limitedFilteredData[i].url);
         pokemonsList.push(pokemon.data);
       } catch (err) {
         console.error(err);
@@ -97,14 +100,37 @@ const searchPokemonsList = async (req, res) => {
           pokemonsList[i].types[1].type.name.slice(1);
       }
     }
-    res.status(200).send(pokemonsList);
+    const numberOfPages = Math.ceil(filteredData.length / limit);
+    const data = {
+      pokemonsList,
+      numberOfPages,
+    };
+    if (currentPage > 1) {
+      data.previous = true;
+    } else {
+      data.previous = false;
+    }
+    if (currentPage < numberOfPages) {
+      data.next = true;
+    } else {
+      data.next = false;
+    }
+    res.status(200).send(data);
   } catch (err) {
     console.error(err);
     res.status(500).send("Error retrieving data from api");
   }
 };
 
+const getPokemonsList = (req, res) => {
+  const searchingByName = req.body.searchingByName;
+  if (searchingByName) {
+    getPokemonsListWithNameFilter(req, res);
+  } else {
+    getPokemonsListWithoutFilter(req, res);
+  }
+};
+
 module.exports = {
   getPokemonsList,
-  searchPokemonsList,
 };

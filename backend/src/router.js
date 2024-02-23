@@ -21,10 +21,7 @@ const {
   getUserByIdMiddleware,
   modifyPasswordUser,
 } = require("./controllers/userControllers");
-const {
-  getPokemonsList,
-  searchPokemonsList,
-} = require("./controllers/pokemonControllers");
+const { getPokemonsList } = require("./controllers/pokemonControllers");
 const {
   getCaught,
   addCaught,
@@ -46,7 +43,6 @@ router.post("/login", getUserByEmail, verifyPassword, login);
 
 // Pokemons
 router.post("/pokemons", getPokemonsList);
-router.get("/pokemons/pokedex/:search", searchPokemonsList);
 router.get("/pokemons/caught/:id", verifyToken, getCaught);
 router.post("/pokemons/caught", verifyToken, addCaught);
 router.delete("/pokemons/caught/:id", verifyToken, removeCaught);
