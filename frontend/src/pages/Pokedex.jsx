@@ -6,58 +6,33 @@ import Swal from "sweetalert2";
 // Import des composants
 import Card from "../components/Card";
 import PreviousNext from "../components/PreviousNext";
+import Error from "../components/Error";
 
 // Import des images
 import pokeball from "../assets/pokeball.png";
-import error from "../assets/error.png";
 
 function Pokedex() {
   const [pokemonsList, setPokemonsList] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isError, setIsError] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [numberOfPages, setNumberOfPages] = useState(0);
+  const [pageLimit, setPageLimit] = useState(20);
   const [isNextAvailable, setIsNextAvailable] = useState(true);
   const [isPreviousAvailable, setIsPreviousAvailable] = useState(false);
   const [search, setSearch] = useState("");
+  const [searchingByName, setSearchingByName] = useState(false);
+  const [startFetching, setStartFetching] = useState(0);
 
   const getPokemonsList = () => {
     setIsError(false);
     setIsLoaded(false);
     axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/pokemons`)
-      .then((res) => {
-        if (res.data.next) {
-          setIsNextAvailable(true);
-        }
-        if (res.data.previous) {
-          setIsPreviousAvailable(true);
-        }
-        setPokemonsList(res.data.pokemonsList);
-        setCurrentPage(res.data.newPage);
-        setIsLoaded(true);
-      })
-      .catch((err) => {
-        setIsError(true);
-        console.error(err);
-        Swal.fire({
-          icon: "error",
-          text: "Error retrieving data from api",
-          iconColor: "red",
-          width: 300,
-          buttonsStyling: false,
-          customClass: {
-            confirmButton: "button",
-          },
-        });
-      });
-  };
-
-  const getPreviousPokemonsList = () => {
-    setIsError(false);
-    setIsLoaded(false);
-    axios
-      .post(`${import.meta.env.VITE_BACKEND_URL}/pokemons/previous`, {
+      .post(`${import.meta.env.VITE_BACKEND_URL}/pokemons`, {
         currentPage,
+        pageLimit,
+        searchingByName,
+        search,
       })
       .then((res) => {
         if (res.data.next) {
@@ -71,7 +46,7 @@ function Pokedex() {
           setIsPreviousAvailable(false);
         }
         setPokemonsList(res.data.pokemonsList);
-        setCurrentPage(res.data.newPage);
+        setNumberOfPages(res.data.numberOfPages);
         setIsLoaded(true);
       })
       .catch((err) => {
@@ -79,7 +54,7 @@ function Pokedex() {
         console.error(err);
         Swal.fire({
           icon: "error",
-          text: "Error retrieving data from api",
+          text: err.response.data,
           iconColor: "red",
           width: 300,
           buttonsStyling: false,
@@ -88,79 +63,11 @@ function Pokedex() {
           },
         });
       });
-  };
-
-  const getNextPokemonsList = () => {
-    setIsError(false);
-    setIsLoaded(false);
-    axios
-      .post(`${import.meta.env.VITE_BACKEND_URL}/pokemons/next`, {
-        currentPage,
-      })
-      .then((res) => {
-        if (res.data.next) {
-          setIsNextAvailable(true);
-        } else {
-          setIsNextAvailable(false);
-        }
-        if (res.data.previous) {
-          setIsPreviousAvailable(true);
-        } else {
-          setIsPreviousAvailable(false);
-        }
-        setPokemonsList(res.data.pokemonsList);
-        setCurrentPage(res.data.newPage);
-        setIsLoaded(true);
-      })
-      .catch((err) => {
-        setIsError(true);
-        console.error(err);
-        Swal.fire({
-          icon: "error",
-          text: "Error retrieving data from api",
-          iconColor: "red",
-          width: 300,
-          buttonsStyling: false,
-          customClass: {
-            confirmButton: "button",
-          },
-        });
-      });
-  };
-
-  const searchPokemonsList = (e) => {
-    e.preventDefault();
-    if (search) {
-      setIsError(false);
-      setIsLoaded(false);
-      axios
-        .get(`${import.meta.env.VITE_BACKEND_URL}/pokemons/pokedex/${search}`)
-        .then((res) => {
-          setPokemonsList(res.data);
-          setIsLoaded(true);
-        })
-        .catch((err) => {
-          setIsError(true);
-          console.error(err);
-          Swal.fire({
-            icon: "error",
-            text: "Error retrieving data from api",
-            iconColor: "red",
-            width: 300,
-            buttonsStyling: false,
-            customClass: {
-              confirmButton: "button",
-            },
-          });
-        });
-    } else {
-      getPokemonsList();
-    }
   };
 
   useEffect(() => {
     getPokemonsList();
-  }, []);
+  }, [startFetching]);
 
   useEffect(() => {
     if (isError) {
@@ -172,7 +79,18 @@ function Pokedex() {
     <div>
       {isLoaded ? (
         <div className="cardsContainer">
-          <form onSubmit={(e) => searchPokemonsList(e)}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              setCurrentPage(1);
+              if (search) {
+                setSearchingByName(true);
+              } else {
+                setSearchingByName(false);
+              }
+              setStartFetching(startFetching + 1);
+            }}
+          >
             <input
               type="text"
               className="textInput"
@@ -184,15 +102,76 @@ function Pokedex() {
               Search
             </button>
           </form>
+          <div className="resultPerPage">
+            <button
+              type="button"
+              className={`numberButton ${
+                pageLimit === 5 ? "numberDisabled" : ""
+              }`}
+              onClick={() => {
+                setCurrentPage(1);
+                setPageLimit(5);
+                setStartFetching(startFetching + 1);
+              }}
+            >
+              5
+            </button>
+            <button
+              type="button"
+              className={`numberButton ${
+                pageLimit === 20 ? "numberDisabled" : ""
+              }`}
+              onClick={() => {
+                setCurrentPage(1);
+                setPageLimit(20);
+                setStartFetching(startFetching + 1);
+              }}
+            >
+              20
+            </button>
+            <button
+              type="button"
+              className={`numberButton ${
+                pageLimit === 50 ? "numberDisabled" : ""
+              }`}
+              onClick={() => {
+                setCurrentPage(1);
+                setPageLimit(50);
+                setStartFetching(startFetching + 1);
+              }}
+            >
+              50
+            </button>
+            <button
+              type="button"
+              className={`numberButton ${
+                pageLimit === 100 ? "numberDisabled" : ""
+              }`}
+              onClick={() => {
+                setCurrentPage(1);
+                setPageLimit(100);
+                setStartFetching(startFetching + 1);
+              }}
+            >
+              100
+            </button>
+          </div>
           <PreviousNext
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            numberOfPages={numberOfPages}
             isNextAvailable={isNextAvailable}
             isPreviousAvailable={isPreviousAvailable}
-            getPreviousPokemonsList={getPreviousPokemonsList}
-            getNextPokemonsList={getNextPokemonsList}
+            startFetching={startFetching}
+            setStartFetching={setStartFetching}
           />
-          {pokemonsList.map((pokemon) => (
-            <Card key={pokemon.id} pokemon={pokemon} />
-          ))}
+          {pokemonsList.length ? (
+            pokemonsList.map((pokemon) => (
+              <Card key={pokemon.id} pokemon={pokemon} />
+            ))
+          ) : (
+            <Error message="No result" />
+          )}
         </div>
       ) : (
         <div className="globalContainer centeredContainer">
@@ -204,12 +183,7 @@ function Pokedex() {
           <h3 className="info">Loading...</h3>
         </div>
       )}
-      {isError ? (
-        <div className="globalContainer centeredContainer">
-          <img src={error} alt="Error icon" className="errorImg" />
-          <h3 className="error">Loading has failed</h3>
-        </div>
-      ) : null}
+      {isError ? <Error message="Loading has failed" /> : null}
     </div>
   );
 }

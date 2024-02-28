@@ -9,3 +9,9 @@
   max-width: 60rem;
   background-color: white;
 }
+
+.resultPerPage {
+  width: 10rem;
+  display: flex;
+  justify-content: space-around;
+}

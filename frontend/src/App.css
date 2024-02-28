@@ -1,13 +1,16 @@
 :root {
   /* Variables */
   --main-color: #5ea2eb;
-  --main-color-opacity: #5ea2ebcc;
+  --main-color-opacity: #5ea2ebee;
   --secondary-color: #ffe945;
   --light-black: #404040;
+  --light-black-opacity: #404040bb;
   --light-grey: #d9d9d9;
+  --light-grey-opacity: #d9d9d9bb;
   --background-grey: #f5f5f5;
   --white-80: #ffffffcc;
   --basic-grey: #555555;
+  --basic-grey-opacity: #555555bb;
   --shadow_initial: 2px 4px 8px -2px grey;
   --shadow_hover: 4px 8px 16px -4px grey;
   --border_card: 1px solid lightgrey;
@@ -145,6 +148,34 @@ a {
   background-color: var(--light-grey);
 }
 
+.numberButton {
+  font-size: 1rem;
+  color: var(--main-color);
+  text-shadow: 1px 0 var(--light-black), -1px 0 var(--light-black),
+    0 1px var(--light-black), 0 -1px var(--light-black),
+    1px 1px var(--light-black), -1px -1px var(--light-black),
+    1px -1px var(--light-black), -1px 1px var(--light-black);
+  background-color: initial;
+  box-shadow: initial;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  align-self: center;
+  font-weight: bold;
+}
+
+.numberButton:hover {
+  color: var(--secondary-color);
+}
+
+.numberDisabled {
+  color: var(--light-grey);
+  cursor: initial;
+}
+
+.numberDisabled:hover {
+  color: var(--light-grey);
+}
+
 /* Other */
 .error {
   color: red;
@@ -181,5 +212,11 @@ a {
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .numberButton {
+    font-size: 0.9rem;
   }
 }
