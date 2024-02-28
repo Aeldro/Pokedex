@@ -6,10 +6,10 @@ import Swal from "sweetalert2";
 // Import des composants
 import Card from "../components/Card";
 import PreviousNext from "../components/PreviousNext";
+import Error from "../components/Error";
 
 // Import des images
 import pokeball from "../assets/pokeball.png";
-import error from "../assets/error.png";
 
 function Pokedex() {
   const [pokemonsList, setPokemonsList] = useState([]);
@@ -102,13 +102,60 @@ function Pokedex() {
               Search
             </button>
           </form>
-          <input
-            type="number"
-            className="textInput"
-            placeholder="Limit per page..."
-            value={pageLimit}
-            onChange={(e) => setPageLimit(e.target.value)}
-          />
+          <div className="resultPerPage">
+            <button
+              type="button"
+              className={`numberButton ${
+                pageLimit === 5 ? "numberDisabled" : ""
+              }`}
+              onClick={() => {
+                setCurrentPage(1);
+                setPageLimit(5);
+                setStartFetching(startFetching + 1);
+              }}
+            >
+              5
+            </button>
+            <button
+              type="button"
+              className={`numberButton ${
+                pageLimit === 20 ? "numberDisabled" : ""
+              }`}
+              onClick={() => {
+                setCurrentPage(1);
+                setPageLimit(20);
+                setStartFetching(startFetching + 1);
+              }}
+            >
+              20
+            </button>
+            <button
+              type="button"
+              className={`numberButton ${
+                pageLimit === 50 ? "numberDisabled" : ""
+              }`}
+              onClick={() => {
+                setCurrentPage(1);
+                setPageLimit(50);
+                setStartFetching(startFetching + 1);
+              }}
+            >
+              50
+            </button>
+            <button
+              type="button"
+              className={`numberButton ${
+                pageLimit === 100 ? "numberDisabled" : ""
+              }`}
+              onClick={() => {
+                setCurrentPage(1);
+                setPageLimit(100);
+                setStartFetching(startFetching + 1);
+              }}
+            >
+              100
+            </button>
+          </div>
           <PreviousNext
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
@@ -118,9 +165,13 @@ function Pokedex() {
             startFetching={startFetching}
             setStartFetching={setStartFetching}
           />
-          {pokemonsList.map((pokemon) => (
-            <Card key={pokemon.id} pokemon={pokemon} />
-          ))}
+          {pokemonsList.length ? (
+            pokemonsList.map((pokemon) => (
+              <Card key={pokemon.id} pokemon={pokemon} />
+            ))
+          ) : (
+            <Error message="No result" />
+          )}
         </div>
       ) : (
         <div className="globalContainer centeredContainer">
@@ -132,12 +183,7 @@ function Pokedex() {
           <h3 className="info">Loading...</h3>
         </div>
       )}
-      {isError ? (
-        <div className="globalContainer centeredContainer">
-          <img src={error} alt="Error icon" className="errorImg" />
-          <h3 className="error">Loading has failed</h3>
-        </div>
-      ) : null}
+      {isError ? <Error message="Loading has failed" /> : null}
     </div>
   );
 }

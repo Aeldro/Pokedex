@@ -7,10 +7,10 @@ import TokenContext from "../contexts/TokenContext";
 
 // Import des composants
 import Card from "../components/Card";
+import Error from "../components/Error";
 
 // Import des images
 import pokeball from "../assets/pokeball.png";
-import error from "../assets/error.png";
 
 function MyPokemons() {
   const { userToken } = useContext(TokenContext);
@@ -66,18 +66,10 @@ function MyPokemons() {
               <h3 className="info">Loading...</h3>
             </div>
           )}
-          {isError ? (
-            <div className="globalContainer centeredContainer">
-              <img src={error} alt="Success icon" className="errorImg" />
-              <h3 className="error">You caught no Pokemon</h3>
-            </div>
-          ) : null}
+          {isError ? <Error message="You caught no Pokemon" /> : null}
         </div>
       ) : (
-        <div className="globalContainer centeredContainer">
-          <img src={error} alt="Error icon" className="errorImg" />
-          <h3 className="error">You must be logged in</h3>
-        </div>
+        <Error message="You must be logged in" />
       )}
     </div>
   );
